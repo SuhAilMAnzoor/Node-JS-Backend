@@ -21,6 +21,6 @@ app.get('/aboutme', function(req,res) {
 })
 
 
-app.listen(port, () => {
+app.listen(port, () => { // set port on the basis of .env file 
     console.log(`Example app listening on port ${port}`)
 })
