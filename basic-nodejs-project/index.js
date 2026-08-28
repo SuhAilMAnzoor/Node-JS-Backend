@@ -6,7 +6,7 @@ const express = require('express');  // common js
 // now app is the main object that handles all server logic
 const app = express()
 
-const port = 5000    // virtual port where the server will listen
+// const port = 5000    // virtual port where the server will listen
 
 app.get('/', (req, res) => {
     res.send('Hello, Welcome to My Website!')   // 
