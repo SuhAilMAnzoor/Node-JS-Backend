@@ -1,25 +1,49 @@
-import mongoose from 'mongoose';
-import { DB_NAME } from './constants.js';
+// require('dotenv').config({path: './env'})  making problem in code consistence
+// there require below import, it will work fine and run the code 
+//  but better way we follow 
 
-import express from "express"
-const app = express()
+import dotenv from "dotenv"
+import connectDB from './db/database.js';
 
-( async () => {
-    try {
-        await mongoose.connect(`${process.env.
-        MONGODB_URI}/ ${DB_NAME}`)
-        app.on("error", (error) => {
-            console.log("Error: application is not able to connect database", error);
-            throw error
-        })
-
-        app.listen(process.env.PORT, () => {
-            console.log(`App is listening on port ${process.env.PORT}`)
-        })
+dotenv.config({
+    path: './env'
+})
 
 
-    } catch (error) {
-        console.error('ERROR :', error)
-        throw error
-    }
-})()
+connectDB()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import express from "express"
+// const app = express()
+
+// ( async () => {
+//     try {
+//         await mongoose.connect(`${process.env.
+//         MONGODB_URI}/ ${DB_NAME}`)
+//         app.on("error", (error) => {
+//             console.log("Error: application is not able to connect database", error);
+//             throw error
+//         })
+
+//         app.listen(process.env.PORT, () => {
+//             console.log(`App is listening on port ${process.env.PORT}`)
+//         })
+
+
+//     } catch (error) {
+//         console.error('ERROR :', error)
+//         throw error
+//     }
+// })()
