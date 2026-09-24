@@ -10,7 +10,19 @@ dotenv.config({
 })
 
 
-connectDB()
+connectDB() //this is promise  // we have talked about in database file
+.then(() => { // inside then we have callback function
+     app.on("error", (error) => { 
+        console.log("Error: application is not able to connect database", error);
+        throw error
+    })
+    app.listen(process.env.PORT || 8000, () => {
+        console.log(`Server is running at port : ${process.env.PORT}`);
+    })
+})
+.catch((error) => {
+    console.log("MONGODB Connection is failed !!! ", error);
+})
 
 
 
