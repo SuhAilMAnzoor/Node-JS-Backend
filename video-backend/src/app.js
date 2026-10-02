@@ -14,5 +14,9 @@ app.use(express.urlencoded({extended: true, limit:"16kb"}))
 app.use(express.static("public"))
 app.use(cookieParser())
 
+// import the registerUser() controller using app.post direct without router
+import { registerUser }  from "./controllers/user.controller.js"
+app.post("/api/v1/users/register", registerUser)
+
 
 export { app }
