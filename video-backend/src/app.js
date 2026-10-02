@@ -14,18 +14,20 @@ app.use(express.urlencoded({extended: true, limit:"16kb"}))
 app.use(express.static("public"))
 app.use(cookieParser())
 
-//define registerUser Routes using app.post() method,   
-//and call direct registerUser() controller without defining proper seperate routes file
+// //define registerUser Routes using app.post() method,   
+// //and call direct registerUser() controller without defining proper seperate routes file
 
 // import { registerUser }  from "./controllers/user.controller.js"
 // app.post("/api/v1/users/register", registerUser)
 
+// ----------------------------------------------------------------------
 
-// // import routes  -  Recommended Approch in professional development
+// // import routes  -  Recommended Approch in professional development,
+// no messy code no more routes related userRoutes 
 import userRouter from "./routes/user.routes.js"
 
 //routes declaration
-app.use("/api/v1/users", userRouter)
+app.use("/api/v1/users", userRouter)         // all userRoutes will be there  
 
 
 export { app }
