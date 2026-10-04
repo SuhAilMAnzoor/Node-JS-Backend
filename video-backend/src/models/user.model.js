@@ -22,15 +22,16 @@ const userSchema = new Schema(
     fullName: {
         type:String,
         required:true,
-        trim:ture,
+        trim:true,
         index: true
     },
     avatar: {
         type: String, // cloudinary url
         required:true,
     },
-    coverimage: {
+    coverImage: {
         type: String, // cloudinary url
+        default: "" // cover image is optional, if not provided, set it to empty string
     },
     watchHistory: [
         {
@@ -50,11 +51,10 @@ const userSchema = new Schema(
   //.pre() is hook    and save is event on which pre hook then callback
 userSchema.pre("save", async function (next) {
     if(!this.isModified("password")) return next();
-    this.passowrd = bcrypt.hash(this.password, 10)
-    next()
+    this.password = await bcrypt.hash(this.password, 10);
 })
 
-userSchema.methods.isPassowrdCorrect = async function(password){
+userSchema.methods.isPasswordCorrect = async function(password){
    return await bcrypt.compare(password, this.password)
 }
 
