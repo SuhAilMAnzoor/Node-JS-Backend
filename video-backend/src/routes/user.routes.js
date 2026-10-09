@@ -23,5 +23,4 @@ router.route("/login").post(loginUser)
 // secured routes
 router.route("/logout").post(verifyJWToken, logoutUser)
 router.route("/refreshAccessToken").post(refreshAccessToken)
-
 export default router
