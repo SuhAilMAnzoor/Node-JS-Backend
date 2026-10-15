@@ -7,6 +7,7 @@ import { User } from "../models/user.model.js"
 import { uploadOnCloudinary } from "../services/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
+import mongoose from "mongoose";
 
 
 const generateAccessAndRefreshTokens = async (userId) => {
@@ -263,4 +264,46 @@ const refreshAccessToken = asyncHandler( async (req, res) => {
   }
 })
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken }
+const changeCurrentPassword = asyncHandler( async(req, res) => {
+    const {oldPassword, newPassword,} = req.body 
+
+    // if (!(newPassword === confrimPassword)){
+            // if neeeded
+    // }
+
+    const user = await User.findById(req.user?._id)
+
+    const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)
+
+    if (!isPasswordCorrect) {
+        throw new ApiError(400, "Incorrect old Password")
+    }
+
+    user.password = newPassword
+    await user.save({validateBeforeSave: false})
+
+    return res
+    .status(200)
+    .json(new ApiResponse(
+        200,
+        {},
+        "Password is changed successfully"
+    )
+    )
+})
+
+
+
+export { 
+    registerUser,
+    loginUser,
+    logoutUser,
+    refreshAccessToken,
+    changeCurrentPassword,
+    getCurrentUser,
+    updateAccountDetails,
+    updateUserAvatar,
+    updateUserCoverImage,
+    getUserChannelProfile,
+    getWatchHistory
+}
