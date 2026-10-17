@@ -182,8 +182,9 @@ const logoutUser = asyncHandler( async (req, res) => {
     User.findByIdAndUpdate(
         req.user._id,
         {
-            $set: {
-                refreshToken: undefined
+            $unset: {
+                refreshToken: 1 // this removes the field
+                // from the document
             }
         },
         {
@@ -397,11 +398,7 @@ const getUserChannelProfile = asyncHandler( async (req, res) => {
     }
 
     const channel = await User.aggregate([
-    {
-        $match: {
-            username: username?.toLowerCase()
-        }
-    }, 
+    { $match: { username: username?.toLowerCase() }}, 
     {
         $lookup:{
             from: "subscriptions",
@@ -420,15 +417,11 @@ const getUserChannelProfile = asyncHandler( async (req, res) => {
     },
     {
         $addFields: {
-            subscribersCount: {
-                $size:"$subscribers"
-            },
-            channelsSubscribedToCount: {
-                $size: "$subscribedTo"
-            },
+            subscribersCount: { $size: "$subscribers" },
+            channelsSubscribedToCount: { $size: "$subscribedTo" },
             isSubscribed: {
                 $cond: {
-                    if: {$in: [req.user?._id, "$subscribers.subscriber"]},
+                    if: { $in: [req.user?._id, "$subscribers.subscriber"]},
                     then: true,
                     else: false
                 }
@@ -474,14 +467,14 @@ const getWatchHistory = asyncHandler(async (req, res) => {
             $lookup: {
                 from: "videos",
                 localField:"watchHistory",
-                forginField: "_id",
+                foreignField: "_id",
                 as: "watchHistory",
                 pipeline: [
                     {
                         $lookup: {
                             from: "users",
                             localField: "owner",
-                            forginField: "_id",
+                            foreignField: "_id",
                             as: "owner",
                             pipeline: [
                                 {
@@ -495,7 +488,7 @@ const getWatchHistory = asyncHandler(async (req, res) => {
                         }
                     },
                     {
-                        addFields: {
+                        $addFields: {
                             owner: {
                                 $first: "$owner"
                             }
