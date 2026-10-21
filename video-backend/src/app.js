@@ -25,9 +25,10 @@ app.use(cookieParser())
 // // import routes  -  Recommended Approch in professional development,
 // no messy code no more routes related userRoutes 
 import userRouter from "./routes/user.routes.js"
+import videoRouter from "./routes/video.routes.js"
 
 //routes declaration
 app.use("/api/v1/users", userRouter)         // all userRoutes will be there  
-
+app.use("/api/v1/videos", videoRouter)
 
 export { app }
