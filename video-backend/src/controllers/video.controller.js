@@ -32,15 +32,11 @@ const getAllVideos = async (req, res) => {
     
     console.log(searchFilter)
 
-    let sortOrderType = -1
-
-    if(sortType === "asc"){
-        sortOrderType = 1
-    }
+    const sortOrderType = sortType === "asc" ? 1 : -1;
 
     console.log(sortOrderType)
 
-    const sortOptions = {[sortBy]:sortOrderType}
+    const sortOptions = { [sortBy]: sortOrderType }
 
     console.log(sortOptions)
 
@@ -48,8 +44,25 @@ const getAllVideos = async (req, res) => {
 
     console.log(skip)
 
+    const totalVideos = await Video.countDocuments(searchFilter)
+    const totalPages = Math.ceil(totalVideos / limitNumber)
+
     const videos = await Video.find(searchFilter).sort(sortOptions).skip(skip).limit(limitNumber)
     console.log(videos)
+
+    return res
+    .status(200)
+    .json({
+        statusCode:200,
+        data: {
+            videos,
+            totalVideos,
+            totalPages,
+            currentPage : pageNumber,
+        },
+        message: "Videos fetched successfully"
+    })
 }
+
 
 export {getAllVideos}
