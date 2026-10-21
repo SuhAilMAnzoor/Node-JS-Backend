@@ -47,6 +47,9 @@ const getAllVideos = async (req, res) => {
     const skip = (pageNumber - 1) * limitNumber 
 
     console.log(skip)
+
+    const videos = await Video.find(searchFilter).sort(sortOptions).skip(skip).limit(limitNumber)
+    console.log(videos)
 }
 
 export {getAllVideos}
