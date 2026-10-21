@@ -43,6 +43,10 @@ const getAllVideos = async (req, res) => {
     const sortOptions = {[sortBy]:sortOrderType}
 
     console.log(sortOptions)
+
+    const skip = (pageNumber - 1) * limitNumber 
+
+    console.log(skip)
 }
 
 export {getAllVideos}
