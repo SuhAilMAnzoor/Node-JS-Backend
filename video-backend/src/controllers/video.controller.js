@@ -64,5 +64,4 @@ const getAllVideos = async (req, res) => {
     })
 }
 
-
 export {getAllVideos}
