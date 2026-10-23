@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 import { Video } from "../models/video.model.js"
 
 
@@ -15,8 +15,8 @@ const getAllVideos = async (req, res) => {
 
     const {page = 1, limit = 10, query, sortBy = "createdAt", sortType = "desc", userId} = req.query
 
-    const pageNumber = Number(page)
-    const limitNumber = Number(limit)
+    let pageNumber = Number(page)
+    let limitNumber = Number(limit)
     console.log(pageNumber)
     console.log(limitNumber)
 
@@ -27,6 +27,9 @@ const getAllVideos = async (req, res) => {
     }
 
     if(userId){
+        if(!isValidObjectId(userId)){
+           return res.status(400).json({statusCode: 400, data:userId, message: "invalid user ID"})
+        }
         searchFilter.owner = userId
     }
     
